@@ -1,5 +1,5 @@
-pip install tensorflow
-pip install streamlit
-pip install numpy
-pip install pillow
-pip install opencv-python
+tensorflow
+streamlit
+numpy
+pillow
+opencv-python
