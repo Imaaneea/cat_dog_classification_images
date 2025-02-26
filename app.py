@@ -10,7 +10,7 @@ import tempfile
 # Loading the model:
 @st.cache(allow_output_mutation=True)
 def load_model():
-    model_url = "https://github.com/Imaaneea/cat_dog_classification_images/blob/main/cats_and_dogs_model.tflite"
+    model_url = "https://github.com/Imaaneea/cat_dog_classification_images/blob/master/cats_and_dogs_model.tflite"
     model_content = requests.get(model_url).content
 
     with tempfile.NamedTemporaryFile(delete=False) as temp_model_file:
