@@ -1,43 +1,31 @@
 import streamlit as st
 import requests
-from PIL import Image
-import numpy as np
+import tempfile
 import tensorflow as tf
-from io import BytesIO
 
-# Fonction pour charger le modèle
-@st.cache_resource
+# URL du modèle stocké sur Google Drive (avec lien de téléchargement direct)
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1xSIDZ3sHrFTXbwbGXY1I9BSCvpYvKMOC"
+
+@st.cache_resource  # Remplace `st.cache` (obsolète) par `st.cache_resource`
 def load_model():
-    model_url = "https://raw.githubusercontent.com/Imaaneea/cat_dog_classification_images/master/cats_and_dogs_model.tflite"
+    """Télécharge et charge le modèle TFLite"""
+    with st.spinner("Téléchargement du modèle..."):
+        response = requests.get(MODEL_URL, stream=True)
+        if response.status_code == 200:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".tflite") as temp_model_file:
+                for chunk in response.iter_content(chunk_size=1024):
+                    temp_model_file.write(chunk)
+                model_path = temp_model_file.name
+        else:
+            st.error("Erreur lors du téléchargement du modèle.")
+            return None
 
-    response = requests.get(model_url)
-    
-    if response.status_code != 200:
-        st.error(f"Failed to download the model. Status code: {response.status_code}")
-        return None
+    # Charger le modèle TensorFlow Lite
+    model = tf.lite.Interpreter(model_path=model_path)
+    model.allocate_tensors()
+    return model
 
-    model_content = response.content  # Bytes
-    model_bytes = bytearray(model_content)  # Convertir en bytearray
-
-    try:
-        model = tf.lite.Interpreter(model_content=model_bytes)
-        model.allocate_tensors()
-        st.success("Model loaded successfully!")
-        return model
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
-
-# Charger le modèle
+# Charger le modèle au démarrage de l'application
 model = load_model()
-
-if model is not None:
-    st.write("""
-    # Cat Vs Dog Classification
-    """)
-
-    uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
-
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image", use_column_width=True)
+if model:
+    st.success("Modèle chargé avec succès ! 🎉")
