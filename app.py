@@ -1,12 +1,12 @@
 import streamlit as st
 import requests
 import tempfile
+import os
 import tensorflow as tf
 
-# URL du modèle stocké sur Google Drive (avec lien de téléchargement direct)
 MODEL_URL = "https://drive.google.com/uc?export=download&id=1xSIDZ3sHrFTXbwbGXY1I9BSCvpYvKMOC"
 
-@st.cache_resource  # Remplace `st.cache` (obsolète) par `st.cache_resource`
+@st.cache_resource  # Utilisation de st.cache_resource
 def load_model():
     """Télécharge et charge le modèle TFLite"""
     with st.spinner("Téléchargement du modèle..."):
@@ -20,12 +20,23 @@ def load_model():
             st.error("Erreur lors du téléchargement du modèle.")
             return None
 
-    # Charger le modèle TensorFlow Lite
-    model = tf.lite.Interpreter(model_path=model_path)
-    model.allocate_tensors()
-    return model
+    # Vérifier si le fichier existe et sa taille
+    if os.path.exists(model_path):
+        st.write(f"✅ Modèle téléchargé à : {model_path}")
+        st.write(f"📂 Taille du fichier : {os.path.getsize(model_path)} octets")
+    else:
+        st.error("⛔ Le fichier du modèle n'a pas été téléchargé correctement.")
+        return None
 
-# Charger le modèle au démarrage de l'application
+    # Charger le modèle TensorFlow Lite
+    try:
+        model = tf.lite.Interpreter(model_path=model_path)
+        model.allocate_tensors()
+        st.success("✅ Modèle chargé avec succès !")
+        return model
+    except Exception as e:
+        st.error(f"⛔ Erreur lors du chargement du modèle : {str(e)}")
+        return None
+
+# Charger le modèle
 model = load_model()
-if model:
-    st.success("Modèle chargé avec succès ! 🎉")
