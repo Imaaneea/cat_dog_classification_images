@@ -66,5 +66,40 @@ def predict_image(image_file, model):
         # Retourner le résultat sous forme de dictionnaire
         result = {
             'value': 'Cat' if class_index == 0 else 'Dog',  # 0: Cat, 1: Dog (selon ton modèle)
-            'prob': confid
+            'prob': confidence
         }
+
+        return result
+    except Exception as e:
+        st.error(f"⛔ Erreur lors de la prédiction : {str(e)}")
+        return {'value': 'Erreur', 'prob': 0}
+
+# Charger le modèle
+model = load_model()
+
+# Streamlit Web App:
+st.write("""
+# MSDE5 : Deep Learning Project
+## Cat Vs Dog Classification
+""")
+
+st.sidebar.image("https://miro.medium.com/v2/resize:fit:1400/format:webp/1*EvMbMNRHm_aOf1n4tDO1Xg.jpeg", width=250)
+st.sidebar.write("This is a classification model of cat and dog images")
+st.markdown("This project was made by : **KHAWLA BADDAR** & **Aymane ElAZHARI**")
+st.write("Upload an image to classify whether it's a cat or a dog.")
+
+uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
+
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    
+    # Redimensionner l'image pour correspondre à la taille attendue par le modèle
+    image = image.resize((224, 224))  # Résolution attendue : 224x224
+    st.image(image, caption="Uploaded Image", use_container_width=True)
+
+    result = predict_image(uploaded_file, model)
+    
+    # Afficher les résultats
+    st.success(f"Prediction: It's a {result['value']}")
+    st.success(f"Prob: {result['prob']}")
+
