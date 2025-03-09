@@ -37,4 +37,33 @@ def load_model():
         st.success("✅ Modèle chargé avec succès !")
         return model
     except Exception as e:
-        st.error(f"⛔ Erreur lors du chargement du modèle 
+        st.error(f"⛔ Erreur lors du chargement du modèle : {str(e)}")
+        return None
+
+# Fonction pour effectuer la prédiction sur l'image
+def predict_image(image_file, model):
+    try:
+        # Charger et pré-traiter l'image
+        image = Image.open(image_file)
+        image = image.resize((224, 224))  # Redimensionner l'image à 224x224
+        image = np.array(image)  # Convertir l'image en tableau numpy
+        image = np.expand_dims(image, axis=0)  # Ajouter une dimension batch
+        image = image / 255.0  # Normaliser l'image (assurez-vous que c'est le bon pré-traitement)
+
+        # Préparer les entrées et obtenir la sortie
+        input_details = model.get_input_details()
+        output_details = model.get_output_details()
+
+        # Configurer l'entrée du modèle
+        model.set_tensor(input_details[0]['index'], image.astype(np.float32))
+        model.invoke()  # Faire la prédiction
+
+        # Obtenir les résultats
+        output_data = model.get_tensor(output_details[0]['index'])
+        class_index = np.argmax(output_data)  # Trouver la classe la plus probable
+        confidence = np.max(output_data)  # La probabilité de la prédiction
+
+        # Retourner le résultat sous forme de dictionnaire
+        result = {
+            'value': 'Cat' if class_index == 0 else 'Dog',  # 0: Cat, 1: Dog (selon ton modèle)
+            'prob': confid
