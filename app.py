@@ -1,10 +1,3 @@
-import streamlit as st
-import requests
-import tempfile
-import os
-import tensorflow as tf
-import numpy as np
-from PIL import Image
 import numpy as np
 from PIL import Image
 import tensorflow as tf
@@ -74,4 +67,4 @@ if uploaded_file is not None:
     
     # Afficher les résultats
     st.success(f"Prediction: It's a {result['value']}")
-    st.success(f
+    st.success(f"Prob: {result['prob']}")
