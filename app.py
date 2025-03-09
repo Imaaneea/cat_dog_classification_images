@@ -4,7 +4,7 @@ import tempfile
 import os
 import tensorflow as tf
 
-MODEL_URL = "https://github.com/Imaaneea/cat_dog_classification_images/raw/master/APP%20deploiement/cats_and_dogs_model.tflite"
+MODEL_URL = "https://github.com/Imaaneea/cat_dog_classification_images/raw/master/cats_and_dogs_model.tflite"
 
 @st.cache_resource  # Utilisation de st.cache_resource
 def load_model():
