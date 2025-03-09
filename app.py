@@ -67,3 +67,4 @@ def predict_image(image_file, model):
         result = {
             'value': 'Cat' if class_index == 0 else 'Dog',  # 0: Cat, 1: Dog (selon ton modèle)
             'prob': confid
+        }
