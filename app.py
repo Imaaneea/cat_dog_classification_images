@@ -79,7 +79,7 @@ model = load_model()
 
 # Streamlit Web App:
 st.write("""
-# MSDE5 : Deep Learning Project
+# MSDE6 : Deep Learning Project
 ## Cat Vs Dog Classification
 """)
 
