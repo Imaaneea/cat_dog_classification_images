@@ -97,9 +97,8 @@ if uploaded_file is not None:
     image = image.resize((224, 224))  # Résolution attendue : 224x224
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
+    # Passer l'image pré-traitée à la fonction de prédiction
     result = predict_image(uploaded_file, model)
     
     # Afficher les résultats
-    st.success(f"Prediction: It's a {result['value']}")
-    st.success(f"Prob: {result['prob']}")
-
+    st.succes
