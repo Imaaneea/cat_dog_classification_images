@@ -4,7 +4,7 @@ import tempfile
 import os
 import tensorflow as tf
 
-MODEL_URL = "https://drive.google.com/uc?export=download&id=1xSIDZ3sHrFTXbwbGXY1I9BSCvpYvKMOC"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=187D82XWSCxReTcH6vUwb7YrcEdjh8Xhv"
 
 @st.cache_resource  # Utilisation de st.cache_resource
 def load_model():
