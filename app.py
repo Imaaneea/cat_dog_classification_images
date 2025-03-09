@@ -40,3 +40,26 @@ def load_model():
 
 # Charger le modèle
 model = load_model()
+
+# Streamlit Web App:
+st.write("""
+# MSDE5 : Deep Learning Project
+## Cat Vs Dog Classification
+""")
+
+st.sidebar.image("https://miro.medium.com/v2/resize:fit:1400/format:webp/1*EvMbMNRHm_aOf1n4tDO1Xg.jpeg", width=250)
+st.sidebar.write("This is a classification model of cat and dog images")
+st.markdown("This project was made by : **KHAWLA BADDAR** & **Aymane ElAZHARI**")
+st.write("Upload an image to classify whether it's a cat or a dog.")
+
+uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
+
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+
+    result = predict_image(uploaded_file, model)
+    
+    # Display the image:
+    st.success(f"Prediction: It's a {result['value']}")
+    st.success(f"Prob: {result['prob']}")
