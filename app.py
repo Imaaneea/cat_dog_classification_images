@@ -85,7 +85,7 @@ st.write("""
 
 st.sidebar.image("https://miro.medium.com/v2/resize:fit:1400/format:webp/1*EvMbMNRHm_aOf1n4tDO1Xg.jpeg", width=250)
 st.sidebar.write("This is a classification model of cat and dog images")
-st.markdown("This project was made by : **KHAWLA BADDAR** & **Aymane ElAZHARI**")
+st.markdown("This project was made by : **EL AYACHI IMANE**")
 st.write("Upload an image to classify whether it's a cat or a dog.")
 
 uploaded_file = st.file_uploader("Choose a file", type=["jpg", "jpeg", "png"])
