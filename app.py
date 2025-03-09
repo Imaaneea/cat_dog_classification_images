@@ -101,4 +101,5 @@ if uploaded_file is not None:
     result = predict_image(uploaded_file, model)
     
     # Afficher les résultats
-    st.succes
+    st.success(f"Prediction: It's a {result['value']}")
+
